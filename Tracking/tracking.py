@@ -61,3 +61,48 @@ class App:
         
         if flag == 0:
             return permission
+        
+    ########################## VALIDATION CODE END ###########################################################
+    
+    ############################ ACCOUNT CODE START #############################################################
+        
+    def create_app(self, name: str, size: float):
+        self.__name = self.validate_name(name)
+        self.__size = self.validate_size(size)
+        print('App Created')
+    
+    def add_hours(self, hours: float):
+        self.__hours += self.validate_hours(hours)
+        print('Hours Added')
+        print(f'Hours: {self.__hours}')
+    
+    def add_permission(self, permission: str):
+        if permission in self.__permissions:
+            raise ValueError('Permission already activated')
+        else:
+            self.__permissions.append(permission)
+            print('Permission Added')
+    
+    def add_extra(self, attribute: str, value: str):
+        checked_attribute = self.validate_name(attribute)
+        checked_value = self.validate_name(value)
+        if checked_attribute in self.__extra.keys():
+            raise ValueError('Attribute already exists')
+        else:
+            self.__extra[checked_attribute] = checked_value
+            print('Extra Attribute Added')
+            
+    def show_status(self):
+        print('Name: ', self.__name)
+        print('Hours: ', self.__hours)
+        print('Size: ', self.__size, ' GB')
+        print('Permissions: ', self.__permissions)
+        print('Extra Attributes: ', self.__extra)
+        
+whatsapp = App()
+whatsapp.create_app('Whatsapp', 1.8)
+whatsapp.add_hours(2)
+whatsapp.add_permission('camera')
+whatsapp.add_permission('contacts')
+whatsapp.add_extra('photos', '765')
+whatsapp.show_status()
