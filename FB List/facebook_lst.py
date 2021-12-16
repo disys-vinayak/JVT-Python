@@ -8,6 +8,7 @@ class Facebook:
         self.__mail = ''
         self.__friends = []
         self.__groups = {}
+        self.__logged_in = 'n'
 
     ############################## VALIDATION CODE START #########################################
     def validate_name(self, name):
@@ -65,6 +66,10 @@ class Facebook:
             flags += 1
             raise ValueError('Password must contain letters, numbers and special characters')
         
+    def check_log_in(self):
+        if self.__logged_in == 'n':
+            raise ValueError('Not Logged In')
+        
 
     ############### VALIDATION CODE END ###########################################
 
@@ -83,6 +88,7 @@ class Facebook:
         checked_password = self.validate_password(password)
         if checked_mail in Facebook.__accounts.keys():
             if Facebook.__accounts[checked_mail] == checked_password:
+                self.__logged_in = 'y'
                 print('Logged In')
             else:
                 print('Mail and Password do not match')
@@ -90,6 +96,7 @@ class Facebook:
             print('Mail does not exist')
             
     def add_friend(self, friend: str):
+        self.check_log_in()
         name = self.validate_name(friend)
         if name in self.__friends:
             raise ValueError(f'{name} already in Friends List')
@@ -97,6 +104,7 @@ class Facebook:
             self.__friends.append(friend)
         
     def add_group(self, group_name: str):
+        self.check_log_in()
         name = self.validate_name(group_name)
         if name in self.__groups.keys():
             raise ValueError(f'{name} already in Groups List')
@@ -105,6 +113,7 @@ class Facebook:
             
     
     def add_group_member(self,group_name: str, member_name: str):
+        self.check_log_in()
         group = self.validate_name(group_name)
         member = self.validate_name(member_name)
         if group not in self.__groups.keys():
@@ -115,11 +124,13 @@ class Facebook:
             self.__groups[group].append(member)
         
     def show_friends(self):
+        self.check_log_in()
         print('Friends List:')
         for friend in self.__friends:
             print('  ', friend)
     
     def show_group(self):
+        self.check_log_in()
         print('Group: ')
         for group in self.__groups.keys():
             print(f'  {group}: ')
@@ -138,5 +149,3 @@ fb.add_group('Pizza')
 fb.add_group_member('Pizza', 'PizzaA')
 fb.show_friends()
 fb.show_group()
-
-
